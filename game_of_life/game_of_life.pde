@@ -2,9 +2,10 @@ import controlP5.*;
 
 ControlP5 cp5_1, cp5_2, cp5_3;
 
-int rows = 50;
-int columns = 50;
+int rows = 100;
+int columns = 100;
 boolean on_off = true;
+boolean recording = false;
 int size_x, size_y;
 int[][] grid = new int[columns][rows];
 void setup() {
@@ -17,13 +18,13 @@ void setup() {
   cp5_1 = new ControlP5(this);
   cp5_2 = new ControlP5(this);
   cp5_3 = new ControlP5(this);
-  cp5_1.addButton("anim").setValue(0).setPosition(0, 0).setSize(50, 25);
+  cp5_1.addButton("animate").setValue(0).setPosition(0, 0).setSize(50, 25);
   cp5_2.addButton("randomize").setValue(0).setPosition(60, 0).setSize(50, 25);
   cp5_3.addButton("Empty").setValue(0).setPosition(120, 0).setSize(50, 25);
 }
 
 void draw() {
-  background(60, 60, 60);
+  background(60);
 
   for (int i = 0; i < rows; i++ ) {
     for (int j = 0; j < columns; j++) {
@@ -38,12 +39,17 @@ void draw() {
     textSize(12);
     textAlign(CENTER, CENTER);
     fill(200);
-    text("Evolving", 760, 10);
+    text("Evolving", width - 40, 10);
   } else {
     textSize(12);
     textAlign(CENTER, CENTER);
     fill(200);
-    text("Static", 760, 10);
+    text("Static", width - 40, 10);
+  }
+  if (recording) {
+    saveFrame("output/gol_####.png");
+    fill(255,0,0);
+    ellipse(width/2, height/2, 50, 50);
   }
 }
 
@@ -96,7 +102,13 @@ void mousePressed() {
   }
 }
 
-public void anim() {
+void keyPressed() {
+  if (key == 'r' || key == 'R') {
+    recording = !recording;
+  }
+}
+
+public void animate() {
   println("on off");
   if (on_off)  on_off = false; 
   else        on_off = true;
